@@ -329,3 +329,64 @@
 .sugerencias__tipo--marca { background: var(--color-info-subtle); color: var(--color-info); }
 .sugerencias__tipo--modelo { background: var(--color-success-subtle); color: var(--color-success); }
 .sugerencias__tipo--color { background: var(--color-bg-elevated); color: var(--color-text-secondary); }
+
+/* ---- Plaza libre: meter siguiente / elegir vehículo ---- */
+.plaza-card__botones { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-sm); }
+.plaza-card__botones .btn--neutro { border-color: var(--color-border-hover); }
+
+/* ---- Modal para elegir vehículo de la cola ---- */
+.modal-card--ancho { width: 620px; }
+.elegir-lista { display: flex; flex-direction: column; gap: var(--space-xs); max-height: 60vh; overflow-y: auto; }
+.elegir-opcion {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--space-md);
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  text-align: left;
+  cursor: pointer;
+}
+.elegir-opcion:hover, .elegir-opcion:focus-visible { border-color: var(--color-accent); background: var(--color-accent-subtle); outline: none; }
+.elegir-opcion__datos { display: flex; flex-direction: column; min-width: 0; }
+
+/* ---- Configuración del local ---- */
+.modal-card--config { width: 760px; gap: var(--space-lg); }
+.config__cabecera { display: flex; align-items: center; justify-content: space-between; gap: var(--space-md); }
+.config__seccion { display: flex; flex-direction: column; gap: var(--space-md); padding-top: var(--space-md); border-top: 1px solid var(--color-border); }
+.config__subtitulo { font-size: var(--font-size-md); font-weight: 800; }
+.config__form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); }
+.config__campo--ancho { grid-column: 1 / -1; }
+.config__acciones { display: flex; justify-content: flex-end; }
+.config__plazas { display: flex; flex-direction: column; gap: var(--space-xs); }
+.config__plaza {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto auto;
+  align-items: center;
+  gap: var(--space-xs);
+}
+.config__plaza--inactiva .input { opacity: 0.6; }
+.config__nueva-plaza { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-xs); }
+
+@media (max-width: 640px) {
+  .config__form { grid-template-columns: 1fr; }
+  .config__plaza { grid-template-columns: 1fr 1fr; }
+  .config__plaza .input { grid-column: 1 / -1; }
+}
+
+/* ---- Paneles de "Fuera": fondo y bordes redondeados por columna ---- */
+.fuera-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-bg-panel-borde);
+  border-radius: var(--radius-xl);
+}
+.fuera-panel > .vista__subtitulo { margin: 0 var(--space-2xs) var(--space-2xs); }
+.fuera-panel--listos { border-top: 4px solid var(--color-success); }
+.fuera-panel .vacio { background: var(--color-bg-card); }

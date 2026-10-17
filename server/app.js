@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const { leerEstado, leerCatalogo } = require('./services/consultas');
 const { crearRouterOrdenes } = require('./routes/ordenes');
 const { crearRouterPlazas } = require('./routes/plazas');
+const { crearRouterConfiguracion } = require('./routes/configuracion');
 
 const PUBLIC_DIR = path.join(__dirname, '..', 'public');
 
@@ -24,6 +25,7 @@ function createApp(db) {
   app.get('/api/catalogo', (req, res) => res.json(leerCatalogo(db)));
   app.use('/api/ordenes', crearRouterOrdenes(db));
   app.use('/api/plazas', crearRouterPlazas(db));
+  app.use('/api/configuracion', crearRouterConfiguracion(db));
   app.use('/api', (req, res) => res.status(404).json({ error: 'Ruta no encontrada.' }));
 
   // Solo se sirve public/: server/, data/ y .env no son alcanzables. El

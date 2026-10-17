@@ -30,7 +30,11 @@ const api = {
   devolver: (ordenId) => pedir('POST', `/api/ordenes/${ordenId}/devolver`),
   cancelar: (ordenId, motivo) => pedir('POST', `/api/ordenes/${ordenId}/cancelar`, { motivo }),
   entregar: (ordenId) => pedir('POST', `/api/ordenes/${ordenId}/entregar`),
-  cobrar: (ordenId, datos) => pedir('POST', `/api/ordenes/${ordenId}/cobrar`, datos)
+  cobrar: (ordenId, datos) => pedir('POST', `/api/ordenes/${ordenId}/cobrar`, datos),
+  configuracion: () => pedir('GET', '/api/configuracion'),
+  guardarLocal: (datos) => pedir('PUT', '/api/configuracion/local', datos),
+  crearPlaza: (nombre) => pedir('POST', '/api/plazas', { nombre }),
+  editarPlaza: (plazaId, cambios) => pedir('PATCH', `/api/plazas/${plazaId}`, cambios)
 };
 
 export default api;

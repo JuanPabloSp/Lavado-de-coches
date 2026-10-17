@@ -4,6 +4,7 @@
 import store from './store.js';
 import { showToast } from './components/toast.js';
 import { iconos } from './utils/iconos.js';
+import { abrirConfiguracion } from './components/configuracionModal.js';
 import { renderPlazas } from './views/plazas.js';
 import { renderFuera } from './views/fuera.js';
 import { renderNuevaOrden } from './views/nuevaOrden.js';
@@ -86,9 +87,9 @@ function leerTemaActual() {
   return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
 }
 
-async function refrescar() {
+async function refrescar({ conCatalogo = false } = {}) {
   try {
-    if (!store.catalogo) await store.cargarCatalogo();
+    if (!store.catalogo || conCatalogo) await store.cargarCatalogo();
     await store.recargar();
   } catch {
     // El aviso de conexión ya lo enseña pintarCabecera().
@@ -100,6 +101,17 @@ async function iniciar() {
   document.getElementById('btn-tema').addEventListener('click', alternarTema);
   document.getElementById('icono-marca').innerHTML = iconos.gota(24);
   document.getElementById('icono-nuevo').innerHTML = iconos.mas(20);
+  document.getElementById('btn-ajustes').innerHTML = iconos.ajustes(20);
+  document.getElementById('btn-ajustes').addEventListener('click', async () => {
+    if (await abrirConfiguracion()) {
+      // Cambiaron el nombre del local o las plazas: releer y repintar todo.
+      await refrescar({ conCatalogo: true });
+      if (store.catalogo) {
+        document.getElementById('nombre-local').textContent = store.catalogo.nombreLocal;
+        document.title = store.catalogo.nombreLocal;
+      }
+    }
+  });
 
   store.on(pintarCabecera);
   try {

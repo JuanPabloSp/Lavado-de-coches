@@ -6,6 +6,8 @@ import store from '../store.js';
 import { escapeHtml } from '../utils/sanitize.js';
 import { formatGs, minutosDesde, textoMinutos } from '../utils/formato.js';
 import { ejecutar, cobrar, ordenDeBoton } from '../acciones.js';
+import { elegirVehiculo } from '../components/elegirVehiculoModal.js';
+import { pedirConfirmacion } from '../components/modal.js';
 import { chipPago, detalleVehiculo, etiquetasServicios } from './comun.js';
 
 export function renderPlazas(container) {
@@ -34,7 +36,9 @@ export function renderPlazas(container) {
     const btn = ev.target.closest('[data-accion]');
     if (!btn || btn.disabled) return;
     const orden = ordenDeBoton(btn);
-    if (!orden && btn.dataset.accion !== 'siguiente') return;
+    // Las acciones de una plaza libre no llevan orden; las demás sí.
+    const dePlazaLibre = btn.dataset.accion === 'siguiente' || btn.dataset.accion === 'elegir';
+    if (!orden && !dePlazaLibre) return;
 
     switch (btn.dataset.accion) {
       case 'siguiente': {
@@ -44,11 +48,33 @@ export function renderPlazas(container) {
           primero && plaza ? `${primero.matricula} entra en ${plaza.nombre}` : null);
         break;
       }
+      case 'elegir': {
+        const plaza = store.estado?.plazas.find(p => p.id === Number(btn.dataset.plaza));
+        if (!plaza) return;
+        elegirVehiculo({ plaza, espera: store.estado.espera }).then((elegida) => {
+          if (elegida) ejecutar(null, () => api.iniciar(elegida.id, plaza.id), `${elegida.matricula} entra en ${plaza.nombre}`);
+        });
+        break;
+      }
       case 'terminar':
-        ejecutar(btn, () => api.terminar(orden.id), `${orden.matricula} listo para retirar`);
+        // Pasar a "listo" avisa al cliente de que puede retirarlo: mejor
+        // confirmar que no fue un toque sin querer.
+        pedirConfirmacion({
+          titulo: `¿Terminaste ${orden.matricula}?`,
+          mensaje: `${orden.servicios.join(', ')}. El vehículo pasa a «Listos para retirar» y la plaza queda libre.`,
+          textoConfirmar: 'Sí, terminado'
+        }).then(({ confirmado }) => {
+          if (confirmado) ejecutar(btn, () => api.terminar(orden.id), `${orden.matricula} listo para retirar`);
+        });
         break;
       case 'devolver':
-        ejecutar(btn, () => api.devolver(orden.id), `${orden.matricula} vuelve a la cola`);
+        pedirConfirmacion({
+          titulo: `¿Devolver ${orden.matricula} a la cola?`,
+          mensaje: 'Sale de la plaza sin terminar y vuelve a la lista de espera en su turno de llegada. La plaza queda libre.',
+          textoConfirmar: 'Sí, devolver a la cola'
+        }).then(({ confirmado }) => {
+          if (confirmado) ejecutar(btn, () => api.devolver(orden.id), `${orden.matricula} vuelve a la cola`);
+        });
         break;
       case 'cobrar':
         if (orden) cobrar(orden);
@@ -110,7 +136,10 @@ function _libre(plaza, siguiente) {
       ${siguiente
         ? `<p class="plaza-card__siguiente">Siguiente en la cola:<br>
              <strong>${escapeHtml(siguiente.matricula)}</strong> · ${escapeHtml(siguiente.servicios.join(', '))}</p>
-           <button class="btn btn--primario btn--grande" data-accion="siguiente" data-plaza="${plaza.id}">Meter siguiente</button>`
+           <div class="plaza-card__botones">
+             <button class="btn btn--primario btn--grande" data-accion="siguiente" data-plaza="${plaza.id}">Meter siguiente</button>
+             <button class="btn btn--neutro btn--grande" data-accion="elegir" data-plaza="${plaza.id}">Elegir vehículo</button>
+           </div>`
         : `<p class="plaza-card__vacia">No hay vehículos esperando.</p>
            <a class="btn btn--fantasma" href="#/nuevo">Registrar vehículo</a>`}
     </article>`;

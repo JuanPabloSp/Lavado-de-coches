@@ -91,6 +91,9 @@
   --z-toast: 1300;
 
   --header-height: 64px;
+  /* Fondo de los paneles que agrupan tarjetas (En espera / Listos). */
+  --color-bg-panel: #16162A;
+  --color-bg-panel-borde: rgba(255, 255, 255, 0.06);
   --header-bg: var(--color-bg-secondary);
   --header-texto: var(--color-text-primary);
   --header-texto-suave: var(--color-text-secondary);
@@ -159,6 +162,9 @@
   --color-btn-neutro: #f8fafc;
   --color-btn-neutro-hover: #f3f4f6;
   --color-btn-neutro-texto: #374151;
+
+  --color-bg-panel: #e2e6eb;
+  --color-bg-panel-borde: #d1d5db;
 
   /* Cabecera en pizarra, como la barra superior y la lateral del TPV. */
   --header-bg: #1e293b;

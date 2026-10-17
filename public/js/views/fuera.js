@@ -21,7 +21,7 @@ export function renderFuera(container) {
 
     container.innerHTML = `
       <section class="vista fuera-grid">
-        <div>
+        <div class="fuera-panel">
           <h2 class="vista__subtitulo">En espera <span class="vista__contador">(${e.espera.length})</span></h2>
           <div class="lista">
             ${e.espera.length
@@ -29,7 +29,7 @@ export function renderFuera(container) {
               : vacio('No hay vehículos esperando.', '<a class="btn btn--fantasma" href="#/nuevo">Registrar vehículo</a>')}
           </div>
         </div>
-        <div>
+        <div class="fuera-panel fuera-panel--listos">
           <h2 class="vista__subtitulo">Listos para retirar <span class="vista__contador">(${e.listos.length})</span></h2>
           <div class="lista">
             ${e.listos.length

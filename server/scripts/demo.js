@@ -11,7 +11,13 @@ const { abrirBaseDatos } = require('../db/database');
 const ordenes = require('../services/ordenes');
 
 const RUTA = path.resolve(__dirname, '..', '..', 'data', 'demo.db');
-for (const sufijo of ['', '-wal', '-shm']) fs.rmSync(RUTA + sufijo, { force: true });
+try {
+  for (const sufijo of ['', '-wal', '-shm']) fs.rmSync(RUTA + sufijo, { force: true });
+} catch (error) {
+  if (error.code !== 'EBUSY') throw error;
+  console.error('[Demo] data/demo.db está en uso: hay otro servidor del lavadero abierto. Ciérralo y vuelve a ejecutar npm run demo.');
+  process.exit(1);
+}
 
 const db = abrirBaseDatos(RUTA);
 const MIN = 60 * 1000;

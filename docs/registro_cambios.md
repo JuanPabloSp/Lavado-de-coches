@@ -80,3 +80,33 @@
   * «land cruiser p» propone Prado antes que el color plata.
 * `public/js/package.json` con `"type": "module"`, como en el comandero, para poder probar el frontend con Node.
 * Comprobado con Node: no hay marcas ni modelos duplicados, todos los tamaños son válidos y los casos anteriores dan el resultado esperado.
+
+## 5. Plaza libre: «Meter siguiente» y «Elegir vehículo» (18/10/2026)
+
+* La plaza libre tiene ahora **dos botones**:
+  * **Meter siguiente**: entra el primero de la cola, como hasta ahora.
+  * **Elegir vehículo**: abre la cola completa, con la posición, la matrícula, el modelo, los servicios con su duración, el importe y el tiempo de espera, y se toca el que entra. Sirve para un cliente con prisa, un lavado corto o un vehículo que ya está delante.
+* Componente nuevo `components/elegirVehiculoModal.js`. Por detrás usa la ruta `POST /api/ordenes/:id/iniciar`, que ya existía.
+* **Arreglo:** la vista de plazas descartaba las acciones sin orden asociada salvo «siguiente». Ahora reconoce también las de plaza libre.
+* Verificado en el navegador: se elige el tercero de la cola para la Plaza 2, entra en ella y los otros dos siguen en espera en su orden.
+
+## 6. Configuración del local, confirmaciones en plaza y paneles en «Fuera» (18/10/2026)
+
+* **Rueda de configuración en la cabecera** (`components/configuracionModal.js`):
+  * **Datos del local**: nombre (sale en la cabecera y en el título de la pestaña), razón social, RUC, dirección, ciudad y teléfono. Se guardan en la tabla `config`. El RUC se valida con el formato paraguayo `80012345-6`.
+  * **Plazas**: añadir (con nombre automático «Plaza N» si se deja vacío), renombrar y activar o desactivar.
+    * No se borran: las órdenes pasadas las siguen nombrando.
+    * No se desactiva una plaza con un vehículo dentro, y siempre queda al menos una activa.
+    * Las desactivadas no salen en la pantalla de plazas.
+  * API: `GET /api/configuracion`, `PUT /api/configuracion/local`, `POST /api/plazas`, `PATCH /api/plazas/:id`. Lógica en `services/configuracion.js`.
+  * ⚠️ De momento cualquiera puede abrirla: hay que protegerla con el login por PIN cuando exista.
+* **Confirmación en las plazas** antes de «Terminado» y de «Devolver a la cola», para evitar toques sin querer.
+* **«Fuera» con paneles**: «En espera» y «Listos para retirar» van cada uno sobre un fondo propio con bordes redondeados (`--color-bg-panel`), y el de listos lleva el borde superior verde.
+* `npm run demo` explica qué pasa si `data/demo.db` está bloqueada por otro servidor abierto, en vez de fallar con un error críptico.
+* **Tests:** 6 nuevos en `tests/api/configuracion.test.js`; 37 en total en verde.
+* Verificado en el navegador:
+  * Añadir «Box techado».
+  * Rechazo del RUC sin dígito verificador.
+  * Nombre del local en la cabecera.
+  * Tres plazas en pantalla.
+  * Las dos confirmaciones.
