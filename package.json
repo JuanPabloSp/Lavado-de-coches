@@ -7,6 +7,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "node server/index.js",
+    "demo": "node server/scripts/demo.js",
     "test": "jest --runInBand"
   },
   "engines": {

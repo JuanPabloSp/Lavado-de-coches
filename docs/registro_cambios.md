@@ -52,3 +52,17 @@
 * **El cobro sigue en cristal oscuro**, como en el TPV, aunque la pantalla de detrás sea clara. Lo consiguen unos tokens oscuros acotados a `.cobro-card`.
 * El tema oscuro se mantiene como alternativa con el botón de la cabecera.
 * La preferencia se guarda en una clave nueva (`lavadero_tema`), para que una elección anterior del tema oscuro no tape el nuevo tema por defecto.
+
+## 3. Datos de demostración y autocompletado de marca, modelo y color (18/10/2026)
+
+* **`npm run demo`** (`server/scripts/demo.js`): carga 10 vehículos ficticios con matrículas paraguayas y arranca el servidor con ellos.
+  * Los vehículos quedan repartidos así: 2 en plazas, 5 en espera y 3 listos para retirar, unos cobrados y otros no, y con tiempos de espera realistas.
+  * Usa `data/demo.db`, que se borra y se vuelve a crear en cada ejecución. **Nunca toca `data/lavadero.db`.**
+* **Autocompletado en «Vehículo»** (`components/autocompletarVehiculo.js` + `utils/sugerencias.js`):
+  * Propone la marca, luego sus modelos y luego el color.
+  * También acierta un modelo sin escribir la marca: «corol» propone Toyota Corolla.
+  * No distingue mayúsculas ni tildes.
+  * Teclado: ↑/↓ para moverse, Enter o Tab para aceptar, Escape para cerrar. Enter no envía el formulario mientras hay sugerencias abiertas.
+  * Elegir el modelo **marca el tamaño** que le corresponde (Frontier → Camioneta). Se puede cambiar a mano.
+  * El campo sigue siendo texto libre.
+* **Catálogo local** en `public/js/datos/vehiculos.js`: 36 marcas habituales en Paraguay, sus modelos con su tamaño, y colores. Se amplía a mano. Es la base para añadir después los logos.

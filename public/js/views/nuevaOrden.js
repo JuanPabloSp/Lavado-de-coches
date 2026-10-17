@@ -7,6 +7,7 @@ import { escapeHtml } from '../utils/sanitize.js';
 import { formatGs, textoMinutos } from '../utils/formato.js';
 import { showToast } from '../components/toast.js';
 import { cobrar } from '../acciones.js';
+import { adjuntarAutocompletado } from '../components/autocompletarVehiculo.js';
 
 export function renderNuevaOrden(container, { navigate }) {
   const cat = store.catalogo;
@@ -47,7 +48,8 @@ export function renderNuevaOrden(container, { navigate }) {
           </label>
           <label class="campo">
             <span class="campo__etiqueta">Vehículo</span>
-            <input class="input" name="vehiculo" maxlength="80" autocomplete="off" placeholder="Toyota Hilux gris">
+            <input class="input" name="vehiculo" maxlength="80" autocomplete="off" spellcheck="false" placeholder="Empieza a escribir: Toyota, Hilux, Picanto…">
+            <span class="campo__ayuda">Marca, modelo y color. Al elegir el modelo se marca el tamaño (se puede cambiar).</span>
           </label>
           <div class="campo">
             <span class="campo__etiqueta">Tamaño</span>
@@ -184,6 +186,17 @@ export function renderNuevaOrden(container, { navigate }) {
     if (ev.target.name === 'matricula') _error('matricula', '');
   }
 
+  const quitarAutocompletado = adjuntarAutocompletado(campo('vehiculo'), {
+    nombresTamano: Object.fromEntries(cat.tamanos.map(t => [t.id, t.nombre])),
+    onModelo(tamano) {
+      // Solo si ese tamaño existe en el catálogo del lavadero.
+      if (cat.tamanos.some(t => t.id === tamano)) {
+        tamanoId = tamano;
+        _actualizar();
+      }
+    }
+  });
+
   container.addEventListener('click', onClick);
   form.addEventListener('submit', onSubmit);
   form.addEventListener('input', onInput);
@@ -191,6 +204,7 @@ export function renderNuevaOrden(container, { navigate }) {
   campo('matricula').focus();
 
   return () => {
+    quitarAutocompletado();
     container.removeEventListener('click', onClick);
     form.removeEventListener('submit', onSubmit);
     form.removeEventListener('input', onInput);
