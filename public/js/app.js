@@ -17,7 +17,9 @@ const RUTAS = {
 // Cada 20 s se relee el estado: mantiene al día los minutos de espera y de
 // lavado, y detecta si el servidor se ha caído.
 const REFRESCO_MS = 20000;
-const CLAVE_TEMA = 'lavadero_theme';
+// Clave nueva al pasar al tema kiosko por defecto: así no manda la preferencia
+// guardada cuando el oscuro era el tema por defecto.
+const CLAVE_TEMA = 'lavadero_tema';
 
 const vista = document.getElementById('vista');
 let cleanup = null;
@@ -59,11 +61,11 @@ function pintarCabecera() {
   document.getElementById('badge-fuera').textContent = fuera ? String(fuera) : '';
 }
 
-// ---- Tema: oscuro por defecto, como el comandero ----
+// ---- Tema: kiosko (claro, colores del TPV) por defecto; oscuro opcional ----
 // localStorage puede fallar (modo privado, kiosko): nunca debe tumbar la app
 // (comandero, entrada 60).
 function leerTema() {
-  try { return localStorage.getItem(CLAVE_TEMA) === 'light' ? 'light' : 'dark'; } catch { return 'dark'; }
+  try { return localStorage.getItem(CLAVE_TEMA) === 'dark' ? 'dark' : 'light'; } catch { return 'light'; }
 }
 
 function aplicarTema(tema) {

@@ -40,3 +40,15 @@
   * Meter en plaza, «meter siguiente», terminado, entregar, y cobrar y entregar con tarjeta.
   * Sin errores en consola.
 * **Precios de ejemplo** en `server/db/seed.js`: hay que ajustarlos a la lista real.
+
+## 2. Colores de la pantalla de kiosko del TPV (18/10/2026)
+
+* **Qué cambia:** el tema por defecto pasa a ser el **kiosko** del TPV del comandero (`tpv.html`). Usa estos colores:
+  * Fondo gris `#eef0f3`.
+  * Tarjetas blancas con borde `#d1d5db`.
+  * Textos `#111827` / `#374151` / `#6b7280`.
+  * Cabecera en pizarra `#1e293b`, como la barra superior y la lateral del TPV.
+  * Acento naranja `#E94D1B`.
+* **El cobro sigue en cristal oscuro**, como en el TPV, aunque la pantalla de detrás sea clara. Lo consiguen unos tokens oscuros acotados a `.cobro-card`.
+* El tema oscuro se mantiene como alternativa con el botón de la cabecera.
+* La preferencia se guarda en una clave nueva (`lavadero_tema`), para que una elección anterior del tema oscuro no tape el nuevo tema por defecto.
