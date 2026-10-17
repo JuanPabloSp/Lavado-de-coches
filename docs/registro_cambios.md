@@ -66,3 +66,17 @@
   * Elegir el modelo **marca el tamaño** que le corresponde (Frontier → Camioneta). Se puede cambiar a mano.
   * El campo sigue siendo texto libre.
 * **Catálogo local** en `public/js/datos/vehiculos.js`: 36 marcas habituales en Paraguay, sus modelos con su tamaño, y colores. Se amplía a mano. Es la base para añadir después los logos.
+
+## 4. Catálogo ampliado a los modelos más comunes en Paraguay (18/10/2026)
+
+* **De 36 a 53 marcas y 512 modelos** en `public/js/datos/vehiculos.js`. Ahora incluye:
+  * Los **japoneses usados importados**, muy comunes en el país: Allion, Premio, Vitz, Ractis, Spacio, Runx, Platz, Wish, Noah, AD, Wingroad, Demio, Pajero io, Escudo, Airwave…
+  * Más modelos del mercado Mercosur.
+  * Las marcas chinas de concesionario: JETOUR, Kaiyi, GAC, MG, BAIC, Maxus, Jinbei…
+  * Utilitarios como Kia Bongo, Hyundai Porter, Isuzu NPR o Toyota Dyna.
+* Dentro de cada marca, los modelos más frecuentes van primero, para que salgan antes en las sugerencias.
+* **Arreglo en las sugerencias:**
+  * «Toyota Land Cruiser » ya no salta directo a los colores: primero ofrece Prado, Land Cruiser y 70.
+  * «land cruiser p» propone Prado antes que el color plata.
+* `public/js/package.json` con `"type": "module"`, como en el comandero, para poder probar el frontend con Node.
+* Comprobado con Node: no hay marcas ni modelos duplicados, todos los tamaños son válidos y los casos anteriores dan el resultado esperado.

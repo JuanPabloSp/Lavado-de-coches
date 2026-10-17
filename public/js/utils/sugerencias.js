@@ -49,15 +49,30 @@ export function sugerir(entrada) {
       .sort((a, b) => b.clave.length - a.clave.length)
       .find(m => empiezaPor(resto, m.clave) && resto.length > m.clave.length);
 
+    // "toyota land cruiser " todavía puede seguir a "Land Cruiser Prado" o "70":
+    // mientras haya modelos más largos que empiecen así, se ofrecen esos.
+    const continuaciones = modelo
+      ? marca.modelos.filter(m => m.clave.startsWith(resto.trimEnd() + ' ') || m === modelo)
+      : [];
+    if (modelo && continuaciones.length > 1 && resto.trimEnd() === modelo.clave) {
+      return continuaciones
+        .slice(0, MAX)
+        .map(m => ({ tipo: 'modelo', texto: `${marca.marca} ${m.nombre}`, valor: `${marca.marca} ${m.nombre}`, tamano: m.tamano }));
+    }
+
     if (modelo) {
       // Marca y modelo completos: ahora el color.
       const color = resto.slice(modelo.clave.length + 1).trim();
       const base = `${marca.marca} ${modelo.nombre}`;
-      return COLORES
+      // "land cruiser p" puede ser "Land Cruiser Prado" o el color plata:
+      // primero el modelo más largo que encaje, luego los colores.
+      const masLargos = marca.modelos
+        .filter(m => m.clave.length > modelo.clave.length && m.clave.startsWith(resto.trim()))
+        .map(m => ({ tipo: 'modelo', texto: `${marca.marca} ${m.nombre}`, valor: `${marca.marca} ${m.nombre}`, tamano: m.tamano }));
+      return masLargos.concat(COLORES
         .filter(c => normalizar(c).startsWith(color))
         .filter(c => normalizar(c) !== color)
-        .slice(0, MAX)
-        .map(c => ({ tipo: 'color', texto: c, valor: `${base} ${c}` }));
+        .map(c => ({ tipo: 'color', texto: c, valor: `${base} ${c}` }))).slice(0, MAX);
     }
 
     return marca.modelos
