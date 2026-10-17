@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es-PY" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lavadero</title>
+  <!-- Orden de carga intencional: tokens → base → componentes → cobro -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/componentes.css">
+  <link rel="stylesheet" href="css/cobro.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header__marca">
+      <span id="icono-marca"></span>
+      <span class="app-header__nombre" id="nombre-local">Lavadero</span>
+    </div>
+    <nav class="app-nav" aria-label="Pantallas">
+      <a href="#/plazas" class="app-nav__tab" data-ruta="plazas">Plazas <span class="app-nav__badge" id="badge-plazas"></span></a>
+      <a href="#/fuera" class="app-nav__tab" data-ruta="fuera">Fuera <span class="app-nav__badge" id="badge-fuera"></span></a>
+    </nav>
+    <div class="app-header__acciones">
+      <a href="#/nuevo" class="btn btn--primario" data-ruta="nuevo"><span id="icono-nuevo"></span><span class="btn__texto-largo">Nuevo vehículo</span></a>
+      <button class="btn-icono" id="btn-tema" type="button"></button>
+    </div>
+  </header>
+
+  <main class="app-main" id="vista"></main>
+
+  <div class="aviso-conexion" id="aviso-conexion" role="alert" hidden>Sin conexión con el servidor del lavadero. Reintentando…</div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

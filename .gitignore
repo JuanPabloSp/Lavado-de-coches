@@ -1,0 +1,8 @@
+node_modules/
+.env
+
+# Base de datos local y sus ficheros WAL: son datos del negocio, no código.
+data/
+*.db
+*.db-wal
+*.db-shm
