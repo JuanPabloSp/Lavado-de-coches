@@ -110,3 +110,11 @@
   * Nombre del local en la cabecera.
   * Tres plazas en pantalla.
   * Las dos confirmaciones.
+
+## 7. Icono de auto con el color del estado de la plaza (18/10/2026)
+
+* El chip de estado de cada plaza lleva un **icono de auto** (`iconos.auto`) que toma el color del estado:
+  * **Verde**: libre.
+  * **Ámbar**: lavando, dentro del tiempo previsto.
+  * **Rojo**: lavando y **pasado del tiempo previsto**. El chip dice «Lavando · pasado de tiempo» y el borde superior de la tarjeta se pone rojo, igual que la barra de progreso.
+* Verificado en el navegador con un lavado forzado a 31 min de 20 previstos en la BD de demostración.

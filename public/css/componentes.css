@@ -390,3 +390,11 @@
 .fuera-panel > .vista__subtitulo { margin: 0 var(--space-2xs) var(--space-2xs); }
 .fuera-panel--listos { border-top: 4px solid var(--color-success); }
 .fuera-panel .vacio { background: var(--color-bg-card); }
+
+/* ---- Chip de estado de la plaza con icono de auto ----
+   Verde = libre, ámbar = lavando, rojo = lavando y pasado del tiempo previsto.
+   El icono usa currentColor, así que toma el color del chip. */
+.chip--estado { gap: 6px; padding: 4px 12px 4px 10px; font-size: var(--font-size-base); }
+.chip--estado svg { flex: 0 0 auto; }
+.chip--pasado { background: var(--color-error-subtle); color: var(--color-error); }
+.plaza-card--pasada { border-top-color: var(--color-error); }

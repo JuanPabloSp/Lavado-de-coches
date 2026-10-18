@@ -4,6 +4,7 @@
 import api from '../api.js';
 import store from '../store.js';
 import { escapeHtml } from '../utils/sanitize.js';
+import { iconos } from '../utils/iconos.js';
 import { formatGs, minutosDesde, textoMinutos } from '../utils/formato.js';
 import { ejecutar, cobrar, ordenDeBoton } from '../acciones.js';
 import { elegirVehiculo } from '../components/elegirVehiculoModal.js';
@@ -100,10 +101,10 @@ function _ocupada(plaza, ahora) {
   const pct = Math.min(100, Math.round((min / previsto) * 100));
 
   return `
-    <article class="plaza-card plaza-card--ocupada">
+    <article class="plaza-card plaza-card--ocupada ${pasado ? 'plaza-card--pasada' : ''}">
       <header class="plaza-card__cabecera">
         <h2 class="plaza-card__nombre">${escapeHtml(plaza.nombre)}</h2>
-        <span class="chip chip--lavando">Lavando</span>
+        <span class="chip chip--estado ${pasado ? 'chip--pasado' : 'chip--lavando'}">${iconos.auto(16)}${pasado ? 'Lavando · pasado de tiempo' : 'Lavando'}</span>
       </header>
       <div class="plaza-card__matricula">${escapeHtml(o.matricula)}</div>
       <div class="plaza-card__vehiculo">${detalleVehiculo(o)}</div>
@@ -131,7 +132,7 @@ function _libre(plaza, siguiente) {
     <article class="plaza-card plaza-card--libre">
       <header class="plaza-card__cabecera">
         <h2 class="plaza-card__nombre">${escapeHtml(plaza.nombre)}</h2>
-        <span class="chip chip--libre">Libre</span>
+        <span class="chip chip--estado chip--libre">${iconos.auto(16)}Libre</span>
       </header>
       ${siguiente
         ? `<p class="plaza-card__siguiente">Siguiente en la cola:<br>
