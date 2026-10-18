@@ -211,3 +211,46 @@ describe('errores', () => {
     expect((await request(app).get('/.env')).status).toBe(404);
   });
 });
+
+describe('volver a lavar un vehículo marcado como listo', () => {
+  async function lista(matricula = 'AAA111', plazaId = 1) {
+    const id = (await crear({ matricula })).body.id;
+    await request(app).post(`/api/ordenes/${id}/iniciar`).send({ plazaId });
+    await request(app).post(`/api/ordenes/${id}/terminar`);
+    return id;
+  }
+
+  test('vuelve a su plaza si sigue libre, con el cronómetro de antes', async () => {
+    const id = await lista();
+    const inicio = db.prepare('SELECT inicio_at FROM ordenes WHERE id = ?').get(id).inicio_at;
+    const res = await request(app).post(`/api/ordenes/${id}/reactivar`);
+    expect(res.body).toEqual({ estado: 'lavando', plazaNombre: 'Plaza 1' });
+    const e = await estado();
+    expect(e.listos).toHaveLength(0);
+    expect(e.plazas[0].orden).toMatchObject({ id, inicioAt: inicio, finAt: null });
+  });
+
+  test('si su plaza ya está ocupada, vuelve a la cola', async () => {
+    const id = await lista();
+    await crear({ matricula: 'BBB222' });
+    await request(app).post('/api/plazas/1/siguiente');
+    const res = await request(app).post(`/api/ordenes/${id}/reactivar`);
+    expect(res.body).toEqual({ estado: 'en_espera', plazaNombre: null });
+    expect((await estado()).espera.map(o => o.matricula)).toEqual(['AAA111']);
+  });
+
+  test('solo desde listo; y /iniciar no sirve para reactivar', async () => {
+    const enCola = (await crear({ matricula: 'CCC333' })).body.id;
+    expect((await request(app).post(`/api/ordenes/${enCola}/reactivar`)).status).toBe(409);
+    const id = await lista('DDD444', 2);
+    expect((await request(app).post(`/api/ordenes/${id}/iniciar`).send({ plazaId: 1 })).status).toBe(409);
+    expect((await request(app).post(`/api/ordenes/${id}/devolver`)).status).toBe(409);
+  });
+
+  test('una orden ya cobrada mantiene su cobro al reactivarla', async () => {
+    const id = await lista();
+    await request(app).post(`/api/ordenes/${id}/cobrar`).send({ metodoPago: 'qr' });
+    await request(app).post(`/api/ordenes/${id}/reactivar`);
+    expect((await estado()).plazas[0].orden).toMatchObject({ pagada: true, ventaNumero: 1 });
+  });
+});

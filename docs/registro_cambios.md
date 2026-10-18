@@ -138,3 +138,15 @@
   * El panel del cobro.
 * Los logos van sobre una pastilla blanca para que se lean también en tema oscuro.
 * Verificado en el navegador: las 8 marcas de los datos de demostración cargan su imagen, y las sugerencias muestran el logo.
+
+## 9. «Volver a lavar»: deshacer un «Terminado» pulsado sin querer (18/10/2026)
+
+* Botón **«Volver a lavar»** en cada vehículo de «Listos para retirar», con confirmación. La confirmación dice dónde va a ir el vehículo:
+  * **Si su plaza sigue libre**, vuelve a ella como «Lavando», **con el cronómetro que llevaba** (conserva `inicio_at` y borra `fin_at`).
+  * **Si la plaza ya la ocupa otro**, vuelve a la cola de espera en su turno de llegada.
+* Si ya estaba cobrado, conserva su cobro.
+* Servidor:
+  * `POST /api/ordenes/:id/reactivar`, con la lógica en `reactivarOrden()`.
+  * En `domain/estados.js`, «listo» puede volver a «lavando» o a «en espera».
+  * Para que esa apertura no se cuele por otras rutas, `/iniciar` solo acepta órdenes en espera y `/devolver` solo órdenes lavando.
+* **Tests:** 4 nuevos (vuelve a su plaza, plaza ocupada → cola, solo desde listo y sin colarse por `/iniciar` ni `/devolver`, conserva el cobro); 41 en total en verde.

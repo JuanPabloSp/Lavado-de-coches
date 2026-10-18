@@ -61,6 +61,10 @@ function crearRouterOrdenes(db) {
     res.json({ ok: true });
   });
 
+  router.post('/:id/reactivar', validate(soloIdSchema), (req, res) => {
+    res.json(ordenes.reactivarOrden(db, req.params.id));
+  });
+
   router.post('/:id/cancelar', validate(cancelarSchema), (req, res) => {
     ordenes.cancelarOrden(db, req.params.id, req.body.motivo);
     res.json({ ok: true });

@@ -3,8 +3,8 @@
  * testearlas aisladas.
  *
  *   en_espera ──► lavando ──► listo ──► entregada
- *       │  ◄──────┘  │          │
- *       └──────────► cancelada ◄┘
+ *       │  ◄──────┘  │  ◄───────┘ │      (listo vuelve atrás: "Volver a lavar")
+ *       └──────────► cancelada ◄──┘
  *
  * El cobro NO es un estado: una orden está pagada si tiene venta, y se puede
  * cobrar en cualquier estado abierto (al dejar el coche o al retirarlo).
@@ -13,7 +13,8 @@
 const TRANSICIONES = {
   en_espera: ['lavando', 'cancelada'],
   lavando: ['listo', 'en_espera', 'cancelada'],
-  listo: ['entregada', 'cancelada'],
+  // listo → lavando / en_espera: deshacer un "Terminado" pulsado sin querer.
+  listo: ['entregada', 'cancelada', 'lavando', 'en_espera'],
   entregada: [],
   cancelada: []
 };

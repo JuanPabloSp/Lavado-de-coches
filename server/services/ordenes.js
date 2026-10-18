@@ -77,7 +77,8 @@ function crearOrden(db, datos) {
 }
 
 function _iniciar(db, orden, plazaId) {
-  _exigirTransicion(orden, 'lavando');
+  // Solo desde la cola: volver a lavar un "listo" es reactivarOrden().
+  if (orden.estado !== 'en_espera') throw businessError(mensajeTransicion(orden.estado, 'lavando'), 409);
   const plaza = db.prepare('SELECT id, nombre FROM plazas WHERE id = ? AND activa = 1').get(plazaId);
   if (!plaza) throw businessError('La plaza no existe.', 404);
 
@@ -119,9 +120,37 @@ function terminarLavado(db, ordenId) {
 function devolverAEspera(db, ordenId) {
   db.transaction(() => {
     const orden = _orden(db, ordenId);
-    _exigirTransicion(orden, 'en_espera');
+    if (orden.estado !== 'lavando') throw businessError(mensajeTransicion(orden.estado, 'en_espera'), 409);
     db.prepare("UPDATE ordenes SET estado = 'en_espera', plaza_id = NULL, inicio_at = NULL WHERE id = ?").run(ordenId);
     _log(db, 'devolver_espera', `Orden ${ordenId} (${orden.matricula}) vuelve a la cola`);
+  }).immediate();
+}
+
+/**
+ * Deshacer un "Terminado": el vehículo vuelve a su plaza si sigue libre, y el
+ * cronómetro continúa desde su inicio. Si la plaza ya la ocupa otro, vuelve a
+ * la cola en su turno de llegada. Devuelve dónde quedó.
+ */
+function reactivarOrden(db, ordenId) {
+  return db.transaction(() => {
+    const orden = _orden(db, ordenId);
+    if (orden.estado !== 'listo') throw businessError('Solo se puede volver a lavar un vehículo que está listo.', 409);
+
+    const plaza = orden.plaza_id
+      ? db.prepare('SELECT id, nombre FROM plazas WHERE id = ? AND activa = 1').get(orden.plaza_id)
+      : null;
+    const ocupada = plaza
+      ? db.prepare("SELECT 1 FROM ordenes WHERE plaza_id = ? AND estado = 'lavando'").get(plaza.id)
+      : true;
+
+    if (plaza && !ocupada) {
+      db.prepare("UPDATE ordenes SET estado = 'lavando', fin_at = NULL WHERE id = ?").run(ordenId);
+      _log(db, 'reactivar_orden', `Orden ${ordenId} (${orden.matricula}) vuelve a ${plaza.nombre}`);
+      return { estado: 'lavando', plazaNombre: plaza.nombre };
+    }
+    db.prepare("UPDATE ordenes SET estado = 'en_espera', plaza_id = NULL, inicio_at = NULL, fin_at = NULL WHERE id = ?").run(ordenId);
+    _log(db, 'reactivar_orden', `Orden ${ordenId} (${orden.matricula}) vuelve a la cola`);
+    return { estado: 'en_espera', plazaNombre: null };
   }).immediate();
 }
 
@@ -197,6 +226,7 @@ module.exports = {
   meterSiguiente,
   terminarLavado,
   devolverAEspera,
+  reactivarOrden,
   cancelarOrden,
   entregarOrden,
   cobrarOrden

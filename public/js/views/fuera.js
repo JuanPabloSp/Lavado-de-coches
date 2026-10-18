@@ -3,6 +3,8 @@
    ============================================ */
 import { logoVehiculo } from '../utils/marcas.js';
 import api from '../api.js';
+import { pedirConfirmacion } from '../components/modal.js';
+import { showToast } from '../components/toast.js';
 import store from '../store.js';
 import { escapeHtml } from '../utils/sanitize.js';
 import { formatGs, minutosDesde, textoMinutos } from '../utils/formato.js';
@@ -65,6 +67,24 @@ export function renderFuera(container) {
       case 'cancelar':
         cancelar(orden);
         break;
+      case 'reactivar': {
+        const plaza = store.estado.plazas.find(p => p.id === orden.plazaId);
+        const libre = plaza && !plaza.orden;
+        pedirConfirmacion({
+          titulo: `¿Volver a lavar ${orden.matricula}?`,
+          mensaje: libre
+            ? `Vuelve a ${plaza.nombre} como «Lavando», con el tiempo que ya llevaba.`
+            : 'Su plaza ya está ocupada: vuelve a la cola de espera en su turno de llegada.',
+          textoConfirmar: 'Sí, volver a lavar'
+        }).then(({ confirmado }) => {
+          if (!confirmado) return;
+          ejecutar(btn, async () => {
+            const r = await api.reactivar(orden.id);
+            showToast(r.estado === 'lavando' ? `${orden.matricula} vuelve a ${r.plazaNombre}` : `${orden.matricula} vuelve a la cola`, 'success');
+          });
+        });
+        break;
+      }
     }
   }
 
@@ -126,6 +146,7 @@ function _filaLista(o, ahora) {
           ? `<button class="btn btn--exito btn--grande" data-accion="entregar" data-id="${o.id}">Entregar</button>`
           : `<button class="btn btn--exito btn--grande" data-accion="cobrar-entregar" data-id="${o.id}">Cobrar y entregar</button>
              <button class="btn btn--peligro" data-accion="cancelar" data-id="${o.id}">Cancelar</button>`}
+        <button class="btn btn--fantasma" data-accion="reactivar" data-id="${o.id}" title="Por si se pulsó Terminado sin querer">Volver a lavar</button>
       </div>
     </article>`;
 }

@@ -27,6 +27,7 @@ const api = {
   iniciar: (ordenId, plazaId) => pedir('POST', `/api/ordenes/${ordenId}/iniciar`, { plazaId }),
   siguiente: (plazaId) => pedir('POST', `/api/plazas/${plazaId}/siguiente`),
   terminar: (ordenId) => pedir('POST', `/api/ordenes/${ordenId}/terminar`),
+  reactivar: (ordenId) => pedir('POST', `/api/ordenes/${ordenId}/reactivar`),
   devolver: (ordenId) => pedir('POST', `/api/ordenes/${ordenId}/devolver`),
   cancelar: (ordenId, motivo) => pedir('POST', `/api/ordenes/${ordenId}/cancelar`, { motivo }),
   entregar: (ordenId) => pedir('POST', `/api/ordenes/${ordenId}/entregar`),
