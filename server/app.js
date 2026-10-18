@@ -12,7 +12,7 @@ const PUBLIC_DIR = path.join(__dirname, '..', 'public');
  * Construye la app sobre una BD ya abierta. Separada de index.js para que los
  * tests la monten con una BD en memoria, sin abrir puerto.
  */
-function createApp(db) {
+function createApp(db, { demo = false } = {}) {
   const app = express();
   app.disable('x-powered-by');
 
@@ -22,7 +22,8 @@ function createApp(db) {
   app.use(express.json({ limit: '50kb' }));
 
   app.get('/api/estado', (req, res) => res.json(leerEstado(db)));
-  app.get('/api/catalogo', (req, res) => res.json(leerCatalogo(db)));
+  // `demo` avisa a la interfaz de que los datos no se guardan (Vercel).
+  app.get('/api/catalogo', (req, res) => res.json({ ...leerCatalogo(db), demo }));
   app.use('/api/ordenes', crearRouterOrdenes(db));
   app.use('/api/plazas', crearRouterPlazas(db));
   app.use('/api/configuracion', crearRouterConfiguracion(db));

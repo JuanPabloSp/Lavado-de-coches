@@ -169,3 +169,13 @@
   * **12 vehículos** que combinan lavados y detailing: 3 en plazas (incluido un tratamiento cerámico de 3 h en el box), 6 en espera y 3 listos, con varios métodos de pago ya cobrados.
 * Los servicios de la demostración se buscan por nombre, porque los ids del detailing no son fijos. Si falta uno, la demo se detiene con un mensaje claro.
 * Se quita el icono de la gota que había junto al nombre del local en la cabecera.
+
+## 12. Despliegue en Vercel en modo demostración (18/10/2026)
+
+* **`api/index.js`**: es la función serverless de Vercel. Arranca la app con una **BD en memoria** y los datos de NogueraDetailing.
+  * ⚠️ Vercel no tiene disco permanente: **lo que se haga se pierde** cuando Vercel recicla la función, y dos instancias a la vez no comparten datos. Sirve para **enseñar** el programa, no para usarlo en el local.
+* **`vercel.json`**: Vercel sirve `public/` como estáticos y manda solo `/api/*` a la función.
+* **`server/db/demo.js`**: los datos ficticios salen de `scripts/demo.js` a un módulo propio (`cargarDemo(db)`), que comparten `npm run demo` y Vercel.
+* `createApp(db, { demo })`: `/api/catalogo` devuelve `demo: true` en Vercel, y la cabecera muestra entonces el aviso **«DEMO»**.
+* `[hidden] { display: none !important; }` en `base.css`: una clase con `display` (como `.chip`) anulaba el atributo `hidden`.
+* Probado en local llamando al handler de Vercel: devuelve los datos de NogueraDetailing con `demo: true` y permite crear órdenes. `npm run demo` sigue igual. 43 tests en verde.

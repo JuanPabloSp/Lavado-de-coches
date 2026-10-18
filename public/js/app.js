@@ -117,6 +117,7 @@ async function iniciar() {
     await store.cargarCatalogo();
     document.getElementById('nombre-local').textContent = store.catalogo.nombreLocal;
     document.title = store.catalogo.nombreLocal;
+    document.getElementById('aviso-demo').hidden = !store.catalogo.demo;
   } catch (err) {
     showToast(err.message, 'error', 8000);
   }

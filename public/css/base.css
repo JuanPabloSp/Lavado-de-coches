@@ -4,6 +4,9 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* El atributo hidden manda aunque una clase defina display (p. ej. .chip). */
+[hidden] { display: none !important; }
+
 html, body { margin: 0; padding: 0; }
 
 body {
@@ -182,3 +185,7 @@ textarea.input { resize: vertical; min-height: 72px; }
   .app-nav { margin-left: 0; }
   .app-main { padding: var(--space-md); }
 }
+
+/* Aviso de modo demostración (despliegue en Vercel: los datos no se guardan). */
+.chip--demo { background: var(--color-warning-subtle); color: var(--color-warning); text-transform: uppercase; letter-spacing: 0.6px; }
+.app-header .chip--demo { background: rgba(251, 191, 36, 0.18); color: #fbbf24; }
