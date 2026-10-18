@@ -6,6 +6,7 @@
  * Sigue siendo un campo de texto libre: si la marca o el modelo no están en el
  * catálogo, se escribe a mano y listo.
  */
+import { logoVehiculo } from '../utils/marcas.js';
 import { sugerir } from '../utils/sugerencias.js';
 import { escapeHtml } from '../utils/sanitize.js';
 
@@ -36,6 +37,7 @@ export function adjuntarAutocompletado(input, { nombresTamano = {}, onModelo } =
     lista.innerHTML = items.map((s, i) => `
       <li class="sugerencias__item ${i === activo ? 'sugerencias__item--activo' : ''}" role="option"
           id="${lista.id}-${i}" aria-selected="${i === activo}" data-indice="${i}">
+        ${s.tipo === 'color' ? '' : logoVehiculo(s.texto, 28) || '<span class="logo-marca logo-marca--inicial" style="--tam:28px"></span>'}
         <span class="sugerencias__tipo sugerencias__tipo--${s.tipo}">${s.tipo === 'marca' ? 'Marca' : s.tipo === 'modelo' ? 'Modelo' : 'Color'}</span>
         <span class="sugerencias__texto">${escapeHtml(s.texto)}</span>
         <span class="sugerencias__detalle">${escapeHtml(s.detalle || nombresTamano[s.tamano] || '')}</span>

@@ -1,6 +1,7 @@
 /* ============================================
    Pantalla 2 — Vehículos fuera: en espera y listos para retirar
    ============================================ */
+import { logoVehiculo } from '../utils/marcas.js';
 import api from '../api.js';
 import store from '../store.js';
 import { escapeHtml } from '../utils/sanitize.js';
@@ -80,7 +81,7 @@ export function renderFuera(container) {
 function _datos(o) {
   return `
     <div>
-      <div class="fila-orden__matricula">${escapeHtml(o.matricula)}</div>
+      <div class="con-logo">${logoVehiculo(o.vehiculo, 32)}<div class="fila-orden__matricula">${escapeHtml(o.matricula)}</div></div>
       <div class="fila-orden__detalle">${detalleVehiculo(o)}</div>
       <div class="fila-orden__detalle">${escapeHtml(o.servicios.join(', '))}</div>
       ${o.clienteNombre || o.clienteTelefono

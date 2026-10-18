@@ -1,3 +1,4 @@
+import { logoVehiculo } from '../utils/marcas.js';
 import { escapeHtml } from '../utils/sanitize.js';
 import { formatGs, minutosDesde, textoMinutos } from '../utils/formato.js';
 
@@ -20,7 +21,7 @@ export function elegirVehiculo({ plaza, espera }) {
               <button class="elegir-opcion" data-id="${o.id}">
                 <span class="fila-orden__posicion">${i + 1}</span>
                 <span class="elegir-opcion__datos">
-                  <span class="fila-orden__matricula">${escapeHtml(o.matricula)}</span>
+                  <span class="con-logo">${logoVehiculo(o.vehiculo, 32)}<span class="fila-orden__matricula">${escapeHtml(o.matricula)}</span></span>
                   <span class="fila-orden__detalle">${escapeHtml([o.vehiculo, o.tamanoNombre].filter(Boolean).join(' · '))}</span>
                   <span class="fila-orden__detalle">${escapeHtml(o.servicios.join(', '))} · ${textoMinutos(o.duracionMin)}</span>
                 </span>

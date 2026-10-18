@@ -119,3 +119,22 @@
   * **Rojo**: lavando y **pasado del tiempo previsto**. El chip dice «Lavando · pasado de tiempo» y el borde superior de la tarjeta se pone rojo, igual que la barra de progreso.
 * Verificado en el navegador con un lavado forzado a 31 min de 20 previstos en la BD de demostración.
 * **Cambio posterior:** el icono pasa a ser un **auto de frente relleno** (silueta con parabrisas y faros calados), dibujado para el proyecto a partir de una referencia de Juan. Va a 18 px en el chip.
+
+## 8. Logos de las marcas (18/10/2026)
+
+* **50 logos** en `public/img/marcas/` (424 KB): son las miniaturas de [car-logos-dataset](https://github.com/filippofilip95/car-logos-dataset), solo de las marcas del catálogo.
+  * Se sirven en local, sin depender de internet.
+  * La licencia MIT cubre la recopilación; **cada logo es propiedad de su marca**.
+* **Sin logo en el dataset:** Kaiyi, DFSK y Jinbei. Muestran su inicial en un círculo.
+* `LOGOS` en `datos/vehiculos.js` relaciona cada marca con su archivo. GAC y BAIC figuran en el dataset como `gac-group` y `baic-motor`.
+* `utils/marcas.js`:
+  * `detectarMarca()` reconoce la marca al principio del texto libre del vehículo («Toyota Hilux blanca» → Toyota), sin distinguir mayúsculas ni tildes y probando primero los nombres más largos («Land Rover»).
+  * `logoVehiculo()` devuelve el HTML del logo, o nada si la marca no se reconoce.
+* **El logo aparece en:**
+  * Las sugerencias al escribir.
+  * Las tarjetas de las plazas, junto a la matrícula.
+  * Las listas de «Fuera».
+  * «Elegir vehículo».
+  * El panel del cobro.
+* Los logos van sobre una pastilla blanca para que se lean también en tema oscuro.
+* Verificado en el navegador: las 8 marcas de los datos de demostración cargan su imagen, y las sugerencias muestran el logo.

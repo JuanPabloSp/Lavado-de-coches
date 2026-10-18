@@ -1,6 +1,7 @@
 /* ============================================
    Pantalla 1 — Plazas de trabajo
    ============================================ */
+import { logoVehiculo } from '../utils/marcas.js';
 import api from '../api.js';
 import store from '../store.js';
 import { escapeHtml } from '../utils/sanitize.js';
@@ -106,7 +107,7 @@ function _ocupada(plaza, ahora) {
         <h2 class="plaza-card__nombre">${escapeHtml(plaza.nombre)}</h2>
         <span class="chip chip--estado ${pasado ? 'chip--pasado' : 'chip--lavando'}">${iconos.auto(18)}${pasado ? 'Lavando · pasado de tiempo' : 'Lavando'}</span>
       </header>
-      <div class="plaza-card__matricula">${escapeHtml(o.matricula)}</div>
+      <div class="con-logo">${logoVehiculo(o.vehiculo, 44)}<div class="plaza-card__matricula">${escapeHtml(o.matricula)}</div></div>
       <div class="plaza-card__vehiculo">${detalleVehiculo(o)}</div>
       <ul class="plaza-card__servicios">${etiquetasServicios(o)}</ul>
       ${o.notas ? `<p class="plaza-card__notas">${escapeHtml(o.notas)}</p>` : ''}

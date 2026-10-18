@@ -331,3 +331,4 @@
 }
 .vuelto-card__btn:hover { background: var(--color-success-strong-hover); }
 .vuelto-card__btn:focus-visible { outline: 3px solid rgba(16, 185, 129, 0.4); outline-offset: 2px; }
+.cobro-panel__fila > strong.con-logo { justify-content: flex-end; gap: var(--space-xs); }

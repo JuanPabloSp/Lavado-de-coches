@@ -137,3 +137,23 @@ export const MARCAS = [
 ];
 
 export const COLORES = ['blanco', 'negro', 'gris', 'plata', 'rojo', 'azul', 'verde', 'beige', 'marrón', 'bordó', 'amarillo', 'naranja', 'dorado', 'celeste', 'champagne', 'perla', 'grafito', 'violeta'];
+
+/**
+ * Logo de cada marca: archivo en public/img/marcas/<slug>.png.
+ * Miniaturas de car-logos-dataset (github.com/filippofilip95/car-logos-dataset,
+ * MIT para la recopilación; cada logo es propiedad de su marca). Se sirven en
+ * local para no depender de internet. Las marcas sin entrada (Kaiyi, DFSK,
+ * Jinbei: no están en el dataset) muestran su inicial.
+ */
+export const LOGOS = {
+  'Toyota': 'toyota', 'Kia': 'kia', 'Hyundai': 'hyundai', 'Chevrolet': 'chevrolet', 'Nissan': 'nissan',
+  'Volkswagen': 'volkswagen', 'Ford': 'ford', 'Suzuki': 'suzuki', 'Honda': 'honda', 'Mitsubishi': 'mitsubishi',
+  'Mazda': 'mazda', 'Renault': 'renault', 'Fiat': 'fiat', 'Peugeot': 'peugeot', 'Citroën': 'citroen',
+  'Isuzu': 'isuzu', 'Subaru': 'subaru', 'Daihatsu': 'daihatsu', 'Jeep': 'jeep', 'RAM': 'ram', 'Dodge': 'dodge',
+  'Chery': 'chery', 'JAC': 'jac', 'Haval': 'haval', 'Great Wall': 'great-wall', 'Changan': 'changan',
+  'Geely': 'geely', 'BYD': 'byd', 'JETOUR': 'jetour', 'GAC': 'gac-group', 'MG': 'mg', 'BAIC': 'baic-motor',
+  'Dongfeng': 'dongfeng', 'Maxus': 'maxus', 'Foton': 'foton', 'Lifan': 'lifan', 'Zotye': 'zotye',
+  'Soueast': 'soueast', 'Mahindra': 'mahindra', 'Mercedes-Benz': 'mercedes-benz', 'BMW': 'bmw', 'Audi': 'audi',
+  'Lexus': 'lexus', 'Volvo': 'volvo', 'Land Rover': 'land-rover', 'Porsche': 'porsche', 'Mini': 'mini',
+  'Chrysler': 'chrysler', 'SsangYong': 'ssangyong', 'Tesla': 'tesla'
+};

@@ -398,3 +398,29 @@
 .chip--estado svg { flex: 0 0 auto; }
 .chip--pasado { background: var(--color-error-subtle); color: var(--color-error); }
 .plaza-card--pasada { border-top-color: var(--color-error); }
+
+/* ---- Logos de marca ----
+   Los PNG traen fondo transparente y colores de marca: van sobre una pastilla
+   blanca para que se lean también en tema oscuro. */
+.logo-marca {
+  flex: 0 0 auto;
+  object-fit: contain;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+}
+.logo-marca--inicial {
+  width: var(--tam);
+  height: var(--tam);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-secondary);
+  font-weight: 800;
+  font-size: calc(var(--tam) * 0.5);
+  padding: 0;
+}
+.con-logo { display: flex; align-items: center; gap: var(--space-sm); min-width: 0; }

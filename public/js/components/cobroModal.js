@@ -10,6 +10,7 @@
      entero en cada toque como el original —se perdería el foco y lo tecleado—:
      el esqueleto se pinta una vez y solo se refrescan las zonas que cambian.
    ============================================ */
+import { logoVehiculo } from '../utils/marcas.js';
 import api from '../api.js';
 import { showToast } from './toast.js';
 import { mostrarVuelto } from './vueltoModal.js';
@@ -56,7 +57,7 @@ export function abrirCobro(orden, { entregar = false } = {}) {
           </div>
           <div class="cobro-der">
             <div class="cobro-panel">
-              <div class="cobro-panel__fila"><span>Vehículo</span><strong>${escapeHtml(orden.matricula)}</strong></div>
+              <div class="cobro-panel__fila"><span>Vehículo</span><strong class="con-logo">${logoVehiculo(orden.vehiculo, 26)}${escapeHtml(orden.matricula)}</strong></div>
               ${orden.vehiculo ? `<div class="cobro-panel__fila"><span>Modelo</span><strong>${escapeHtml(orden.vehiculo)}</strong></div>` : ''}
               <div class="cobro-panel__fila"><span>Servicios</span><strong>${escapeHtml(orden.servicios.join(', '))}</strong></div>
               <div class="cobro-panel__fila"><span>Estado</span><strong>${escapeHtml(_textoEstado(orden))}</strong></div>
