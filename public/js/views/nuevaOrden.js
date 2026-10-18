@@ -9,6 +9,12 @@ import { showToast } from '../components/toast.js';
 import { cobrar } from '../acciones.js';
 import { adjuntarAutocompletado } from '../components/autocompletarVehiculo.js';
 
+// Orden y nombre de los grupos de servicios en el formulario.
+const GRUPOS = [
+  { id: 'lavado', nombre: 'Lavado' },
+  { id: 'detailing', nombre: 'Detailing' }
+];
+
 export function renderNuevaOrden(container, { navigate }) {
   const cat = store.catalogo;
   if (!cat) {
@@ -59,14 +65,18 @@ export function renderNuevaOrden(container, { navigate }) {
           </div>
           <div class="campo">
             <span class="campo__etiqueta">Servicios</span>
-            <div class="servicios-grid">
-              ${cat.servicios.map(s => `
+${GRUPOS.filter(g => cat.servicios.some(s => (s.categoria || 'lavado') === g.id)).map(g => `
+              <div class="servicios-grupo">
+                <span class="servicios-grupo__titulo">${g.nombre}</span>
+                <div class="servicios-grid">
+                  ${cat.servicios.filter(s => (s.categoria || 'lavado') === g.id).map(s => `
                 <button type="button" class="servicio-opcion" data-servicio="${s.id}" aria-pressed="false">
                   <span class="servicio-opcion__nombre">${escapeHtml(s.nombre)}</span>
                   <span class="servicio-opcion__precio" data-precio="${s.id}"></span>
                   <span class="servicio-opcion__duracion">${textoMinutos(s.duracionMin)}</span>
                 </button>`).join('')}
-            </div>
+                </div>
+              </div>`).join('')}
             <span class="campo__error" data-error="servicios"></span>
           </div>
         </div>

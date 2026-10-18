@@ -424,3 +424,14 @@
   padding: 0;
 }
 .con-logo { display: flex; align-items: center; gap: var(--space-sm); min-width: 0; }
+
+/* ---- Servicios agrupados (Lavado / Detailing) en Nuevo vehículo ---- */
+.servicios-grupo { display: flex; flex-direction: column; gap: var(--space-xs); }
+.servicios-grupo + .servicios-grupo { margin-top: var(--space-sm); }
+.servicios-grupo__titulo {
+  font-size: var(--font-size-sm);
+  font-weight: 800;
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}

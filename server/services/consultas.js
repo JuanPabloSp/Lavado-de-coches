@@ -80,11 +80,12 @@ function leerEstado(db) {
 function leerCatalogo(db) {
   const tamanos = db.prepare('SELECT id, nombre FROM tamanos ORDER BY orden, id').all();
   const precios = db.prepare('SELECT servicio_id, tamano_id, precio FROM servicio_precios').all();
-  const servicios = db.prepare('SELECT id, nombre, duracion_min FROM servicios WHERE activo = 1 ORDER BY orden, id').all()
+  const servicios = db.prepare('SELECT id, nombre, duracion_min, categoria FROM servicios WHERE activo = 1 ORDER BY orden, id').all()
     .map(s => ({
       id: s.id,
       nombre: s.nombre,
       duracionMin: s.duracion_min,
+      categoria: s.categoria,
       precios: Object.fromEntries(precios.filter(p => p.servicio_id === s.id).map(p => [p.tamano_id, p.precio]))
     }));
   const plazas = db.prepare('SELECT id, nombre FROM plazas WHERE activa = 1 ORDER BY orden, id').all();

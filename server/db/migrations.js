@@ -151,6 +151,16 @@ const migrations = [
         INSERT INTO contadores (nombre, valor) VALUES ('venta', 0);
       `);
     }
+  },
+  {
+    version: 2,
+    name: 'categoria_servicio',
+    // Separa los lavados de los servicios de detailing para agruparlos en la
+    // pantalla. Los servicios existentes son todos lavados.
+    up(db) {
+      db.exec(`ALTER TABLE servicios ADD COLUMN categoria TEXT NOT NULL DEFAULT 'lavado'
+               CHECK(categoria IN ('lavado', 'detailing'))`);
+    }
   }
 ];
 
@@ -187,4 +197,4 @@ function runMigrations(db) {
   return db.pragma('user_version', { simple: true });
 }
 
-module.exports = { runMigrations, ultimaVersionConocida };
+module.exports = { runMigrations, ultimaVersionConocida, migrations };

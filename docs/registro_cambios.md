@@ -151,3 +151,12 @@
   * Para que esa apertura no se cuele por otras rutas, `/iniciar` solo acepta órdenes en espera y `/devolver` solo órdenes lavando.
 * **Tests:** 4 nuevos (vuelve a su plaza, plaza ocupada → cola, solo desde listo y sin colarse por `/iniciar` ni `/devolver`, conserva el cobro); 41 en total en verde.
 * **Cambio posterior:** el botón y la confirmación pasan a decir **«Volver a activar»**.
+
+## 10. Servicios de detailing (18/10/2026)
+
+* **12 servicios de detailing** habituales en Paraguay, con precio por tamaño (auto / SUV / camioneta). Son: limpieza interior completa, lavado de tapizados con extracción, hidratación de cuero, revividor de plásticos, sanitizado con ozono, pulido de faros (par), descontaminado de pintura, pulido de carrocería, corrección de pintura en 2 pasos, sellado acrílico, tratamiento cerámico y lavado de chasis.
+* ⚠️ **Precios de EJEMPLO.** No hay listas de precios publicadas por lavaderos paraguayos. Los de referencia salen de anuncios sueltos en redes (pulido de faros 100.000–150.000 Gs el par, limpieza interior completa ~140.000 Gs) y el resto es una estimación proporcional. **Hay que ajustarlos a la lista real del local.**
+* **Migración 2:** columna `servicios.categoria` (`lavado` | `detailing`). Los servicios que ya existían quedan como `lavado`.
+* `sembrarDetailing()` añade los servicios **una sola vez por base de datos**, también en instalaciones ya existentes, y lo marca en `config.detailing_sembrado`. Si luego el dueño desactiva uno, no vuelve a aparecer.
+* En «Nuevo vehículo» los servicios salen agrupados en **Lavado** y **Detailing**.
+* **Tests:** 2 nuevos (el detailing se siembra una sola vez, y una BD en versión 1 con datos migra y recibe el detailing); 43 en total en verde.

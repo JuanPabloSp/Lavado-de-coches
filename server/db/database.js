@@ -2,7 +2,7 @@ const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 const { runMigrations } = require('./migrations');
-const { sembrarSiVacia } = require('./seed');
+const { sembrarSiVacia, sembrarDetailing } = require('./seed');
 
 /**
  * Abre (o crea) la base de datos, aplica las migraciones y siembra los datos de
@@ -23,6 +23,7 @@ function abrirBaseDatos(ruta) {
 
   runMigrations(db);
   sembrarSiVacia(db);
+  sembrarDetailing(db);
   return db;
 }
 
