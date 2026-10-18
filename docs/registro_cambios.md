@@ -118,3 +118,4 @@
   * **Ámbar**: lavando, dentro del tiempo previsto.
   * **Rojo**: lavando y **pasado del tiempo previsto**. El chip dice «Lavando · pasado de tiempo» y el borde superior de la tarjeta se pone rojo, igual que la barra de progreso.
 * Verificado en el navegador con un lavado forzado a 31 min de 20 previstos en la BD de demostración.
+* **Cambio posterior:** el icono pasa a ser un **auto de frente relleno** (silueta con parabrisas y faros calados), dibujado para el proyecto a partir de una referencia de Juan. Va a 18 px en el chip.

@@ -104,7 +104,7 @@ function _ocupada(plaza, ahora) {
     <article class="plaza-card plaza-card--ocupada ${pasado ? 'plaza-card--pasada' : ''}">
       <header class="plaza-card__cabecera">
         <h2 class="plaza-card__nombre">${escapeHtml(plaza.nombre)}</h2>
-        <span class="chip chip--estado ${pasado ? 'chip--pasado' : 'chip--lavando'}">${iconos.auto(16)}${pasado ? 'Lavando · pasado de tiempo' : 'Lavando'}</span>
+        <span class="chip chip--estado ${pasado ? 'chip--pasado' : 'chip--lavando'}">${iconos.auto(18)}${pasado ? 'Lavando · pasado de tiempo' : 'Lavando'}</span>
       </header>
       <div class="plaza-card__matricula">${escapeHtml(o.matricula)}</div>
       <div class="plaza-card__vehiculo">${detalleVehiculo(o)}</div>
@@ -132,7 +132,7 @@ function _libre(plaza, siguiente) {
     <article class="plaza-card plaza-card--libre">
       <header class="plaza-card__cabecera">
         <h2 class="plaza-card__nombre">${escapeHtml(plaza.nombre)}</h2>
-        <span class="chip chip--estado chip--libre">${iconos.auto(16)}Libre</span>
+        <span class="chip chip--estado chip--libre">${iconos.auto(18)}Libre</span>
       </header>
       ${siguiente
         ? `<p class="plaza-card__siguiente">Siguiente en la cola:<br>
