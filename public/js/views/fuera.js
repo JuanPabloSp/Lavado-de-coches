@@ -71,11 +71,11 @@ export function renderFuera(container) {
         const plaza = store.estado.plazas.find(p => p.id === orden.plazaId);
         const libre = plaza && !plaza.orden;
         pedirConfirmacion({
-          titulo: `¿Volver a lavar ${orden.matricula}?`,
+          titulo: `¿Volver a activar ${orden.matricula}?`,
           mensaje: libre
             ? `Vuelve a ${plaza.nombre} como «Lavando», con el tiempo que ya llevaba.`
             : 'Su plaza ya está ocupada: vuelve a la cola de espera en su turno de llegada.',
-          textoConfirmar: 'Sí, volver a lavar'
+          textoConfirmar: 'Sí, volver a activar'
         }).then(({ confirmado }) => {
           if (!confirmado) return;
           ejecutar(btn, async () => {
@@ -146,7 +146,7 @@ function _filaLista(o, ahora) {
           ? `<button class="btn btn--exito btn--grande" data-accion="entregar" data-id="${o.id}">Entregar</button>`
           : `<button class="btn btn--exito btn--grande" data-accion="cobrar-entregar" data-id="${o.id}">Cobrar y entregar</button>
              <button class="btn btn--peligro" data-accion="cancelar" data-id="${o.id}">Cancelar</button>`}
-        <button class="btn btn--fantasma" data-accion="reactivar" data-id="${o.id}" title="Por si se pulsó Terminado sin querer">Volver a lavar</button>
+        <button class="btn btn--fantasma" data-accion="reactivar" data-id="${o.id}" title="Por si se pulsó Terminado sin querer">Volver a activar</button>
       </div>
     </article>`;
 }

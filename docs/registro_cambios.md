@@ -150,3 +150,4 @@
   * En `domain/estados.js`, «listo» puede volver a «lavando» o a «en espera».
   * Para que esa apertura no se cuele por otras rutas, `/iniciar` solo acepta órdenes en espera y `/devolver` solo órdenes lavando.
 * **Tests:** 4 nuevos (vuelve a su plaza, plaza ocupada → cola, solo desde listo y sin colarse por `/iniciar` ni `/devolver`, conserva el cobro); 41 en total en verde.
+* **Cambio posterior:** el botón y la confirmación pasan a decir **«Volver a activar»**.
