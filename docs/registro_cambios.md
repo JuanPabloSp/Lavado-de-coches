@@ -160,3 +160,12 @@
 * `sembrarDetailing()` añade los servicios **una sola vez por base de datos**, también en instalaciones ya existentes, y lo marca en `config.detailing_sembrado`. Si luego el dueño desactiva uno, no vuelve a aparecer.
 * En «Nuevo vehículo» los servicios salen agrupados en **Lavado** y **Detailing**.
 * **Tests:** 2 nuevos (el detailing se siembra una sola vez, y una BD en versión 1 con datos migra y recibe el detailing); 43 en total en verde.
+
+## 11. Demostración de NogueraDetailing y cabecera sin icono (18/10/2026)
+
+* **`npm run demo`** arranca ahora como **NogueraDetailing**:
+  * Datos del local ficticios: razón social de demo, RUC `80000000-0` y dirección y teléfono de ejemplo.
+  * Una tercera plaza, **«Box detailing»**.
+  * **12 vehículos** que combinan lavados y detailing: 3 en plazas (incluido un tratamiento cerámico de 3 h en el box), 6 en espera y 3 listos, con varios métodos de pago ya cobrados.
+* Los servicios de la demostración se buscan por nombre, porque los ids del detailing no son fijos. Si falta uno, la demo se detiene con un mensaje claro.
+* Se quita el icono de la gota que había junto al nombre del local en la cabecera.

@@ -99,7 +99,6 @@ async function refrescar({ conCatalogo = false } = {}) {
 async function iniciar() {
   aplicarTema(leerTema());
   document.getElementById('btn-tema').addEventListener('click', alternarTema);
-  document.getElementById('icono-marca').innerHTML = iconos.gota(24);
   document.getElementById('icono-nuevo').innerHTML = iconos.mas(20);
   document.getElementById('btn-ajustes').innerHTML = iconos.ajustes(20);
   document.getElementById('btn-ajustes').addEventListener('click', async () => {
